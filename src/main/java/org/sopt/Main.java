@@ -68,7 +68,7 @@ public class Main {
                             System.out.println("❌ 해당 ID의 게시글이 존재하지 않습니다.");
                         }
                     } catch (IllegalArgumentException e) {
-                        System.out.println("❌ 게시글 생성 실패: " + e.getMessage());
+                        System.out.println("❌ 게시글 수정 실패: " + e.getMessage());
                     }
                     break;
 

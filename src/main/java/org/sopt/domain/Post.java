@@ -19,13 +19,16 @@ public class Post {
     }
 
     public void updateTitle(String newTitle) {
-        validateTitle(title);
+        validateTitle(newTitle);
         this.title = newTitle;
     }
 
     private void validateTitle(String title) {
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("!!제목은 비어 있을 수 없습니다!!");
+        }
+        if (title.length() > 30) {
+            throw new IllegalArgumentException("제목은 30자를 넘지 않게 해주세요.");
         }
     }
 }

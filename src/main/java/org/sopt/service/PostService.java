@@ -27,7 +27,7 @@ public class PostService {
         if(post == null) return false;
         post.updateTitle(newTitle);
         return true;
-    };
+    }
 
     public boolean deletePostById(int id) {
         return postRepository.delete(id);
