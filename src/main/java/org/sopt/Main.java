@@ -112,7 +112,9 @@ public class Main {
         System.out.println("1️⃣  게시글 작성");
         System.out.println("2️⃣  전체 게시글 조회");
         System.out.println("3️⃣  게시글 상세 조회");
-        System.out.println("4️⃣  게시글 삭제");
+        System.out.println("4️⃣  게시글 수정");
+        System.out.println("5️⃣  게시글 삭제");
+        System.out.println("6️⃣  게시글 검색");
         System.out.println("0️⃣  프로그램 종료");
         System.out.println("=====================================");
     }

@@ -22,7 +22,6 @@ public class PostRepository {
                 return post;
             }
         }
-
         return null;
     }
 
