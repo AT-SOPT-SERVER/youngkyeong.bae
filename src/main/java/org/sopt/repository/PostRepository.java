@@ -25,6 +25,10 @@ public class PostRepository {
         return null;
     }
 
+    public boolean existsByTitle(String title) {
+        return postList.stream().anyMatch(post -> post.getTitle().equals(title));
+    }
+
     public boolean delete(int id) {
         for (Post post : postList) {
             if (post.getId() == id) {

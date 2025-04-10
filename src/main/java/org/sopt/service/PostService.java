@@ -10,6 +10,9 @@ public class PostService {
     private int postId = 1;
 
     public void createPost(String title) {
+        if (postRepository.existsByTitle(title)) {
+            throw new IllegalArgumentException("이미 존재하는 제목입니다.");
+        }
         Post post = new Post(postId++, title);
         postRepository.save(post);
     }
@@ -25,6 +28,9 @@ public class PostService {
     public boolean updatePostTitle(int id, String newTitle) {
         Post post = postRepository.findPostById(id);
         if(post == null) return false;
+        if (postRepository.existsByTitle(newTitle)) {
+            throw new IllegalArgumentException("이미 존재하는 제목으로 수정할 수 없습니다.");
+        }
         post.updateTitle(newTitle);
         return true;
     }
