@@ -30,6 +30,6 @@ public class PostController {
     }
 
     public List<Post> searchPostsByKeyword(String keyword) {
-        return null;
+        return postService.searchByKeyword(keyword);
     }
 }

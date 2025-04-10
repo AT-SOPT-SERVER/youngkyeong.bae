@@ -4,6 +4,7 @@ import org.sopt.domain.Post;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PostRepository {
     List<Post> postList = new ArrayList<>();
@@ -37,5 +38,11 @@ public class PostRepository {
             }
         }
         return false;
+    }
+
+    public List<Post> findByKeyword(String keyword) {
+        return postList.stream()
+                .filter(post -> post.getTitle().contains(keyword))
+                .collect(Collectors.toList());
     }
 }
