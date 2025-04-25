@@ -3,26 +3,34 @@ package org.sopt.service;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 import org.sopt.util.IdGenerator;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
+@Service
 public class PostService {
-    private final PostRepository postRepository = new PostRepository();
+    private final PostRepository postRepository;
+
+    public PostService(PostRepository postRepository) {
+        this.postRepository=postRepository;
+    }
     private Instant lastCreatedAt = null;
 
     public void createPost(String title) {
-        Instant now = Instant.now();
-        if (postRepository.existsByTitle(title)) {
-            throw new IllegalArgumentException("이미 존재하는 제목입니다.");
-        }
-        if (lastCreatedAt != null && Duration.between(lastCreatedAt, now).toMinutes() < 3) {
-            throw new IllegalArgumentException("마지막 게시글 작성 이후 3분 이내에는 새로운 게시글을 작성할 수 없습니다.");
-        }
+//        Instant now = Instant.now();
+//        if (postRepository.existsByTitle(title)) {
+//            throw new IllegalArgumentException("이미 존재하는 제목입니다.");
+//        }
+//        if (lastCreatedAt != null && Duration.between(lastCreatedAt, now).toMinutes() < 3) {
+//            throw new IllegalArgumentException("마지막 게시글 작성 이후 3분 이내에는 새로운 게시글을 작성할 수 없습니다.");
+//        }
         Post post = new Post(IdGenerator.generate(), title);
-        postRepository.save(post);
-        lastCreatedAt = now;
+//        postRepository.save(post);
+//        lastCreatedAt = now;
+
+        System.out.println(post.getTitle());
     }
 
     public List<Post> getAllPosts() {
