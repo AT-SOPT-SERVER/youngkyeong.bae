@@ -4,43 +4,49 @@ import org.sopt.domain.Post;
 import org.sopt.dto.PostRequest;
 import org.sopt.service.PostService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
-    private int postId;
 
-
-
-    @PostMapping("/post")
-    public void createPost(@RequestBody final PostRequest postRequest) {
-        postService.createPost(postRequest.getTitle());
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
-    @GetMapping("/posts")
-    public ResponseEntity<?> getAllPosts() {
+    @PostMapping
+    public ResponseEntity<Void> createPost(@RequestBody PostRequest request) {
+        postService.createPost(request.title());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Post>> getAllPosts() {
         return ResponseEntity.ok(postService.getAllPosts());
     }
 
-    public Post getPostById(int id) {
-        return postService.getPostById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+        return ResponseEntity.ok(postService.getPostById(id));
     }
 
-    public boolean updatePostTitle(int id, String newTitle) {
-        return postService.updatePostTitle(id, newTitle);
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updatePostTitle(@PathVariable Long id, @RequestBody PostRequest request) {
+        postService.updatePostTitle(id, request.title());
+        return ResponseEntity.ok().build();
     }
 
-    public boolean deletePostById(int id) {
-        return postService.deletePostById(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+        postService.deletePostById(id);
+        return ResponseEntity.ok().build();
     }
 
-    public List<Post> searchPostsByKeyword(String keyword) {
-        return postService.searchByKeyword(keyword);
+    @GetMapping("/search")
+    public ResponseEntity<List<Post>> searchByKeyword(@RequestParam String keyword) {
+        return ResponseEntity.ok(postService.searchByKeyword(keyword));
     }
 }
