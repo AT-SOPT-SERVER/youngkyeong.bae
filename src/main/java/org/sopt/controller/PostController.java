@@ -29,24 +29,24 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+    public ResponseEntity<Post> getPostById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePostTitle(@PathVariable Long id, @RequestBody PostRequest request) {
+    public ResponseEntity<Void> updatePostTitle(@PathVariable("id") Long id, @RequestBody PostRequest request) {
         postService.updatePostTitle(id, request.title());
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePost(@PathVariable("id") Long id) {
         postService.deletePostById(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Post>> searchByKeyword(@RequestParam String keyword) {
+    public ResponseEntity<List<Post>> searchByKeyword(@RequestParam("keyword") String keyword) {
         return ResponseEntity.ok(postService.searchByKeyword(keyword));
     }
 }
