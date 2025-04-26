@@ -1,35 +1,52 @@
 package org.sopt.controller;
 
 import org.sopt.domain.Post;
+import org.sopt.dto.PostRequest;
 import org.sopt.service.PostService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/posts")
 public class PostController {
-    private final PostService postService = new PostService();
-    private int postId;
+    private final PostService postService;
 
-    public void createPost(final String title) {
-        postService.createPost(title);
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
-    public List<Post> getAllPosts() {
-        return postService.getAllPosts();
+    @PostMapping
+    public ResponseEntity<Void> createPost(@RequestBody PostRequest request) {
+        postService.createPost(request.title());
+        return ResponseEntity.ok().build();
     }
 
-    public Post getPostById(int id) {
-        return postService.getPostById(id);
+    @GetMapping
+    public ResponseEntity<List<Post>> getAllPosts() {
+        return ResponseEntity.ok(postService.getAllPosts());
     }
 
-    public boolean updatePostTitle(int id, String newTitle) {
-        return postService.updatePostTitle(id, newTitle);
+    @GetMapping("/{id}")
+    public ResponseEntity<Post> getPostById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(postService.getPostById(id));
     }
 
-    public boolean deletePostById(int id) {
-        return postService.deletePostById(id);
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updatePostTitle(@PathVariable("id") Long id, @RequestBody PostRequest request) {
+        postService.updatePostTitle(id, request.title());
+        return ResponseEntity.ok().build();
     }
 
-    public List<Post> searchPostsByKeyword(String keyword) {
-        return postService.searchByKeyword(keyword);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable("id") Long id) {
+        postService.deletePostById(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Post>> searchByKeyword(@RequestParam("keyword") String keyword) {
+        return ResponseEntity.ok(postService.searchByKeyword(keyword));
     }
 }

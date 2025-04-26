@@ -1,48 +1,13 @@
 package org.sopt.repository;
 
 import org.sopt.domain.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class PostRepository {
-    List<Post> postList = new ArrayList<>();
-
-    public void save(Post post) {
-        postList.add(post);
-    }
-
-    public List<Post> findAll() {
-        return postList;
-    }
-
-    public Post findPostById(int id) {
-        for (Post post : postList) {
-            if (post.getId() == id) {
-                return post;
-            }
-        }
-        return null;
-    }
-
-    public boolean existsByTitle(String title) {
-        return postList.stream().anyMatch(post -> post.getTitle().equals(title));
-    }
-
-    public boolean delete(int id) {
-        for (Post post : postList) {
-            if (post.getId() == id) {
-                postList.remove(post);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<Post> findByKeyword(String keyword) {
-        return postList.stream()
-                .filter(post -> post.getTitle().contains(keyword))
-                .collect(Collectors.toList());
-    }
+@Repository
+public interface PostRepository extends JpaRepository<Post, Long> {
+    boolean existsByTitle(String title);
+    List<Post> findByTitleContaining(String keyword);
 }
