@@ -5,6 +5,7 @@ import org.sopt.domain.User;
 import org.sopt.dto.request.PostRequest;
 import org.sopt.dto.response.PostDetailResponse;
 import org.sopt.dto.response.PostResponse;
+import org.sopt.exception.BadRequestException;
 import org.sopt.exception.ConflictException;
 import org.sopt.exception.ForbiddenException;
 import org.sopt.exception.ResourceNotFoundException;
@@ -68,7 +69,34 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public List<Post> searchByKeyword(String keyword) {
-        return postRepository.findByTitleContaining(keyword);
+    public List<PostResponse> search(String keyword, String name) {
+        boolean hasKw = keyword != null && !keyword.isBlank();
+        boolean hasName = name  != null && !name.isBlank();
+
+        if (!hasKw && !hasName) {
+            throw new BadRequestException("검색어 또는 작성자를 하나 이상 입력해주세요.");
+        }
+
+        List<Post> found;
+        if (hasKw && hasName) {
+            found = postRepository
+                    .findByTitleContainingIgnoreCaseAndUserNameContainingIgnoreCase(keyword, name);
+        } else if (hasKw) {
+            found = postRepository.findByTitleContainingIgnoreCase(keyword);
+        } else {
+            found = postRepository.findByUserNameContainingIgnoreCase(name);
+        }
+
+        if (found.isEmpty()) {
+            throw new ResourceNotFoundException("검색 결과가 없습니다.");
+        }
+
+        return found.stream()
+                .map(post -> new PostResponse(
+                        post.getId(),
+                        post.getTitle(),
+                        post.getUser().getName()
+                ))
+                .collect(Collectors.toList());
     }
 }

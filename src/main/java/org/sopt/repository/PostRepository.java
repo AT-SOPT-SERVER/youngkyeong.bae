@@ -10,5 +10,10 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     boolean existsByTitle(String title);
     List<Post> findAllByOrderByIdDesc();
-    List<Post> findByTitleContaining(String keyword);
+    List<Post> findByTitleContainingIgnoreCase(String keyword);
+    List<Post> findByUserNameContainingIgnoreCase(String name);
+    List<Post> findByTitleContainingIgnoreCaseAndUserNameContainingIgnoreCase(
+            String keyword,
+            String name
+    );
 }

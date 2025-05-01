@@ -50,7 +50,10 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Post>> searchByKeyword(@RequestParam("keyword") String keyword) {
-        return ResponseEntity.ok(postService.searchByKeyword(keyword));
+    public ResponseEntity<List<PostResponse>> search(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "name",  required = false) String name
+    ) {
+        return ResponseEntity.ok(postService.search(keyword, name));
     }
 }
