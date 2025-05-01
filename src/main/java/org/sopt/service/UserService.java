@@ -14,10 +14,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Long signup(UserCreateRequest userCreateRequest) {
-        userCreateRequest.validate();
-        if (userRepository.existsByName(userCreateRequest.name()))
+    public Long signup(UserCreateRequest request) {
+        request.validate();
+        if (userRepository.existsByName(request.name()))
             throw new ConflictException("이미 존재하는 닉네임입니다.");
-        return userRepository.save(new User(userCreateRequest.name(), userCreateRequest.email())).getId();
+        return userRepository.save(new User(request.name(), request.email())).getId();
     }
 }

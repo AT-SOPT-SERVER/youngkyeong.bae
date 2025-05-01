@@ -31,6 +31,14 @@ public class Post {
         return title;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     public void update(String newTitle, String newContent) {
         this.title = newTitle;
         this.content = newContent;
