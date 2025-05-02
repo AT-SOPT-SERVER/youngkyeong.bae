@@ -12,11 +12,13 @@ import org.sopt.exception.ResourceNotFoundException;
 import org.sopt.repository.PostRepository;
 import org.sopt.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
@@ -26,6 +28,7 @@ public class PostService {
         this.userRepository=userRepository;
     }
 
+    @Transactional
     public Long createPost(Long userId, PostRequest request) {
         request.validate();
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("해당 사용자가 존재하지 않습니다. id : " + userId));
@@ -48,6 +51,7 @@ public class PostService {
         return new PostDetailResponse(post.getId(), post.getTitle(), post.getContent(), post.getUser().getName());
     }
 
+    @Transactional
     public void updatePost(Long userId, Long postId, PostRequest request) {
         request.validate();
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("해당 ID의 게시글이 없습니다. id : " + postId));
@@ -61,6 +65,7 @@ public class PostService {
         postRepository.save(post);
     }
 
+    @Transactional
     public void deletePostById(Long userId, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("해당 ID의 게시글이 없습니다. id : " + postId));
         if (!post.getUser().getId().equals(userId)) {
