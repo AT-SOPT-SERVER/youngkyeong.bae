@@ -1,6 +1,7 @@
 package org.sopt.repository;
 
 import org.sopt.domain.Post;
+import org.sopt.domain.PostTag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             String keyword,
             String name
     );
+    List<Post> findByTag(PostTag tag);
+    List<Post> findByTitleContainingIgnoreCaseAndTag(String keyword, PostTag tag);
 }

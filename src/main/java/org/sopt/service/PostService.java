@@ -35,7 +35,7 @@ public class PostService {
         if (postRepository.existsByTitle(request.title())) {
             throw new ConflictException("이미 존재하는 제목입니다.");
         }
-        Post post = new Post(request.title(), request.content(), user);
+        Post post = new Post(request.title(), request.content(), request.tag(), user);
         return postRepository.save(post).getId();
     }
 
@@ -61,7 +61,7 @@ public class PostService {
         if (postRepository.existsByTitle(request.title())) {
             throw new ConflictException("이미 존재하는 제목으로 수정할 수 없습니다.");
         }
-        post.update(request.title(), request.content());
+        post.update(request.title(), request.content(), request.tag());
         postRepository.save(post);
     }
 
